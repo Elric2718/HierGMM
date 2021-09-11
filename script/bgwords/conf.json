@@ -1,0 +1,149 @@
+{
+  "features": {
+    "user": {
+      "max_length": 1,
+      "elements": [
+        {
+          "name": "user_gender",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "vocab_size": 4,
+            "dimension": 4
+          }
+        },
+        {
+          "name": "user_age",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "vocab_size": 10,
+            "dimension": 4
+          }
+        }
+      ]
+    },
+    "context": {
+      "max_length": 1,
+      "elements": [
+        {
+          "name": "cont_exp_clk_cnt",
+          "dtype": "float",
+          "format": "base64",
+          "dimension": 4,
+          "transform": {
+            "type": "projection",
+            "layers": [8]
+          }
+        },
+        {
+          "name": "cont_enter_rate",
+          "dtype": "float",
+          "format": "base64",
+          "dimension": 5,
+          "transform": {
+            "type": "projection",
+            "layers": [8]
+          }
+        }
+      ]
+    },
+    "candidate": {
+      "max_length": 1,
+      "elements": [
+        {
+          "name": "tar_item",
+          "dtype": "text",
+          "format": "text",
+          "dimension": 8,
+          "transform": {
+            "type": "mean_pooling",
+            "shared": "cand_id",
+            "vocab_size": 80010,
+            "dimension": 32
+          }
+        },
+        {
+          "name": "tar_id",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "shared": "bgword_id",
+            "vocab_size": 60010,
+            "dimension": 32
+          }
+        }
+      ]
+    },
+    "ipv": {
+      "max_length": 60,
+      "length": "clk_seq_length",
+      "elements": [
+        {
+          "name": "clk_items",
+          "dtype": "text",
+          "format": "text",
+          "dimension": 8,
+          "transform": {
+            "type": "mean_pooling",
+            "shared": "cand_id",
+            "vocab_size": 80010
+          }
+        },
+        {
+          "name": "clk_ids",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "shared": "bgword_id"
+          }
+        }
+      ]
+    },
+    "exposure": {
+      "max_length": 40,
+      "length": "exp_seq_length",
+      "elements": [
+        {
+          "name": "exp_items",
+          "dtype": "text",
+          "format": "text",
+          "dimension": 8,
+          "transform": {
+            "type": "mean_pooling",
+            "shared": "cand_id",
+            "vocab_size": 80010
+          }
+        },
+        {
+          "name": "exp_ids",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "shared": "bgword_id"
+          }
+        }
+      ]
+    }
+  },
+  "model": {
+    "label_field": "label",
+    "train_step": "main",
+    "model_num": 100,
+    "encoder_blocks": 2,
+    "item_encoder_hidden_size": 32,
+    "behavior_encoder_hidden_size": 32,
+    "sequence_encoder_blocks": 2,
+    "encoder_hidden_size": 32,
+    "attention_hidden_size": 32,
+    "candidate_encoder_projection": [32,32],
+    "user_feature_encoder_projection": [32, 32],
+    "context_feature_encoder_projection": [32, 32],
+    "classifier_projection": [32]
+  }
+}

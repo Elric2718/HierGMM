@@ -1,0 +1,91 @@
+{
+  "features": {
+    "user": {
+      "max_length": 1,
+      "elements": [
+        {
+          "name": "gender",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "vocab_size": 4,
+            "dimension": 4
+          }
+        },
+        {
+          "name": "age",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "vocab_size": 100,
+            "dimension": 4
+          }
+        },
+        {
+          "name": "occupation",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "vocab_size": 30,
+            "dimension": 4
+          }
+        }
+      ]
+    },
+    "context": {
+      "max_length": 1,
+      "elements": []
+    },
+    "candidate": {
+      "max_length": 1,
+      "elements": [
+        {
+          "name": "iidx",
+          "dtype": "int",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "shared": "bgword_id",
+            "vocab_size": 4000,
+            "dimension": 16
+          }
+        }
+      ]
+    },
+    "ipv": {
+      "max_length": 51,
+      "length": "hist_seq_length",
+      "elements": [
+        {
+          "name": "iidx_hist",
+          "dtype": "text",
+          "format": "text",
+          "transform": {
+            "type": "lookup",
+            "shared": "bgword_id"
+          }
+        }
+      ]
+    }
+  },
+  "model": {
+    "label_field": "label",
+    "all_fields": ["uidx", "gender", "age", "occupation", "iidx", "hist_seq_length", "iidx_hist", "emb", "label"],
+    "fields_category": [["uidx", "gender", "age", "occupation"], ["iidx"], ["hist_seq_length", "iidx_hist"], ["label"], ["emb"]],
+    "train_step": "main",
+    "model_num": 100,
+    "encoder_blocks": 2,
+    "item_encoder_hidden_size": 32,
+    "behavior_encoder_hidden_size": 32,
+    "sequence_encoder_blocks": 2,
+    "encoder_hidden_size": 32,
+    "attention_hidden_size": 32,
+    "candidate_encoder_projection": [32,32],
+    "user_feature_encoder_projection": [32, 32],
+    "context_feature_encoder_projection": [32, 32],
+    "classifier_projection": [32]
+  }
+}
